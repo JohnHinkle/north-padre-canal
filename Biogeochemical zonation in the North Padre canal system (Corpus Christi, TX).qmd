@@ -18,23 +18,166 @@ editor: visual
 self-contained: true
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## Load packages
 
 ```{r}
-1 + 1
+library(tidyverse) # loads the tidyverse
+library(readxl)
+library(ggplot2) # for plotting
+library(palettetown) # for color palettes, which happen to be based on Pokemon
+library(cowplot) # for making multi-panel figures
+library(Cairo) # For high quality PDF figures, important for greek symbols
 ```
 
-You can add options to executable code like this
+## Load data
 
 ```{r}
-#| echo: false
-2 * 2
+d1 <- read_excel("./data/NPadreWaterColumn.xlsx", sheet = "Canal")
+d2 <- read_excel("./data/NPadreWaterColumn.xlsx", sheet = "Intersection")
+glimpse(d1)
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+## Plot
+
+```{r}
+# Temperature
+p1 <- ggplot(d1, aes(x = `Temperature (ºC)`, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(23, 28), position = "top") +
+  labs(x = "Temperature (ºC)", y = "Depth (m)") +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# Salinity
+p2 <- ggplot(d1, aes(x = Salinity, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(36, 44), position = "top") +
+  labs(x = "Salinity (PSU)", y = NULL) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# pH
+p3 <- ggplot(d1, aes(x = pH, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(7.0, 8.7), position = "top") +
+  labs(x = "pH", y = NULL) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# DO
+p4 <- ggplot(d1, aes(x = `DO (ppm)`, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(0, 6), position = "top") +
+  labs(x = "DO (ppm)", y = NULL) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# TDS
+p5 <- ggplot(d1, aes(x = `TDS (ppt)`, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(27, 32), position = "top") +
+  labs(x = "TDS (ppt)", y = NULL) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# Temperature
+p6 <- ggplot(d2, aes(x = `Temperature (ºC)`, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(23, 28), position = "top") +
+  labs(x = NULL, y = "Depth (m)") +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# Salinity
+p7 <- ggplot(d2, aes(x = Salinity, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(36, 44), position = "top") +
+  labs(x = NULL, y = NULL) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# pH
+p8 <- ggplot(d2, aes(x = pH, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(7.0, 8.7), position = "top") +
+  labs(x = NULL, y = NULL) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# DO
+p9 <- ggplot(d2, aes(x = `DO (ppm)`, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(0, 6), position = "top") +
+  labs(x = NULL, y = NULL) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# TDS
+p10 <- ggplot(d2, aes(x = `TDS (ppt)`, y = `Depth (m)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(limits = c(27, 32), position = "top") +
+  labs(x = NULL, y = NULL) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# plot grid
+plot_grid(p1, p2, p3, p4, p5,
+          p6, p7, p8, p9, p10,
+          nrow = 2, 
+          labels = c("A)", "B)", "C)", "D)", "E)", "F)", "G)", "H)", "I)", "J)"),
+          scale = 0.9)
+
+
+# save plot as PDF
+ggsave("./plots/water_column.pdf", plot = last_plot(), device = cairo_pdf, width = 10, height = 8)
+```
