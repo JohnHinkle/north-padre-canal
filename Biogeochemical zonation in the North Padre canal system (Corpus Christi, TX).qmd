@@ -29,7 +29,7 @@ library(cowplot) # for making multi-panel figures
 library(Cairo) # For high quality PDF figures, important for greek symbols
 ```
 
-## Load data
+## Load water column data
 
 ```{r}
 d1 <- read_excel("./data/NPadreWaterColumn.xlsx", sheet = "Canal")
@@ -180,4 +180,78 @@ plot_grid(p1, p2, p3, p4, p5,
 
 # save plot as PDF
 ggsave("./plots/water_column.pdf", plot = last_plot(), device = cairo_pdf, width = 10, height = 8)
+```
+
+## Load porewater geochemistry data
+
+```{r}
+d3 <- read_excel("./data/NPadreComprehensivePorewaterGeochem.xlsx", sheet = "Core3")
+d4 <- read_excel("./data/NPadreComprehensivePorewaterGeochem.xlsx", sheet = "Core5")
+glimpse(d3)
+```
+
+## Plot dissolved iron
+
+```{r}
+
+# Core 3
+p1 <- ggplot(d3, aes(x = `Fe (conc.)`, y = `Avg Depth (cm)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(position = "top") +
+  labs(x = "Fe", y = "Depth (cmbsf)") +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# Core 5
+p2 <- ggplot(d4, aes(x = `Fe (conc.)`, y = `Avg Depth (cm)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(position = "top") +
+  labs(x = "Fe", y = "Depth (cmbsf)") +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+plot_grid(p1,p2)
+```
+
+## Plot hydrogen sulfide
+
+```{r}
+
+# Core 3
+p1 <- ggplot(d3, aes(x = `HS (conc.)`, y = `Avg Depth (cm)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(position = "top") +
+  labs(x = "HS", y = "Depth (cmbsf)") +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+# Core 5
+p2 <- ggplot(d4, aes(x = `HS (conc.)`, y = `Avg Depth (cm)`)) +
+  theme_classic() +
+  geom_point(shape = 21,
+             fill = "black",
+             size = 3) +
+  scale_y_reverse() +
+  scale_x_continuous(position = "top") +
+  labs(x = "HS", y = "Depth (cmbsf)") +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_text(face = "bold", size = 14),
+        axis.title.y = element_text(face = "bold", size = 14))
+
+plot_grid(p1,p2)
 ```
